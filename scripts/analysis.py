@@ -1,20 +1,4 @@
-"""
-analysis.py
------------
-Runs the business analytics queries from sql/queries.sql against the
-MySQL database and produces a set of visualizations summarizing:
 
-1. Top 10 products by revenue
-2. Monthly revenue trend
-3. Revenue by category
-4. RFM customer segmentation distribution
-5. Revenue by country
-
-Reads MySQL credentials from environment variables (see .env.example).
-Run scripts/load_data.py first to populate the database.
-
-Output: visualizations/*.png
-"""
 
 import os
 from pathlib import Path
