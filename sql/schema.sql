@@ -1,9 +1,4 @@
--- ============================================================================
--- schema_mysql.sql
--- MySQL version of the Online Retail Analytics schema.
--- Run this in MySQL Workbench (or VS Code MySQL extension) against the
--- `retail_analytics` database.
--- ============================================================================
+
 
 DROP TABLE IF EXISTS transactions;
 DROP TABLE IF EXISTS products;
