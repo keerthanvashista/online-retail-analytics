@@ -1,20 +1,4 @@
-"""
-load_data.py
-------------
-Loads the generated CSV files into a MySQL database (retail_analytics)
-using the schema defined in sql/schema.sql.
 
-Run this after data/generate_data.py, and after running sql/schema.sql
-in MySQL Workbench to create the tables.
-
-SETUP: This script reads your MySQL password from an environment variable
-(MYSQL_PASSWORD) rather than hardcoding it in the file — this keeps the
-project safe to push to a public GitHub repo.
-
-To set it before running (PowerShell):
-    $env:MYSQL_PASSWORD = "your_actual_password"
-    python scripts/load_data.py
-"""
 
 import os
 from pathlib import Path
@@ -27,7 +11,7 @@ from sqlalchemy import create_engine
 # MySQL connection settings
 # ---------------------------------------------------------------------------
 MYSQL_USER = os.environ.get("MYSQL_USER", "root")
-MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")  # required, no default
+MYSQL_PASSWORD = os.environ.get("MYSQL_PASSWORD")  
 MYSQL_HOST = os.environ.get("MYSQL_HOST", "localhost")
 MYSQL_PORT = int(os.environ.get("MYSQL_PORT", 3306))
 MYSQL_DATABASE = os.environ.get("MYSQL_DATABASE", "retail_analytics")
@@ -45,8 +29,7 @@ def main():
             "then re-run this script."
         )
 
-    # URL-encode the password: special characters like '@', ':', '/' inside
-    # a password break the connection string unless escaped this way.
+   
     encoded_password = quote_plus(MYSQL_PASSWORD)
 
     connection_string = (
@@ -61,8 +44,7 @@ def main():
     transactions_df = pd.read_csv(DATA_DIR / "transactions.csv")
 
     # 2. Push into MySQL tables (tables already created via schema_mysql.sql,
-    #    so we use if_exists="append" — NOT "replace", which would drop
-    #    the schema/types we carefully defined)
+  
     customers_df.to_sql("customers", engine, if_exists="append", index=False)
     print(f"  customers: {len(customers_df)} rows loaded")
 
