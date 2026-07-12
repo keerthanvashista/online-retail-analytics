@@ -1,8 +1,3 @@
--- ============================================================================
--- queries.sql
--- Business-facing analytical queries for the Online Retail Analytics project.
--- Written for MySQL 8+ (uses window functions, CTEs, DATE_FORMAT, DATEDIFF).
--- ============================================================================
 
 -- ----------------------------------------------------------------------------
 -- 1. Top 10 best-selling products by total revenue
