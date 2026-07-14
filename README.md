@@ -113,7 +113,7 @@ Then open `http://localhost:8000` in your browser. Note: you can't just
 double-click `index.html` — browsers block local file reads for security,
 so it needs to be served, even just locally like this.
 
-## The RFM segmentation (the part I'm most proud of)
+## The RFM segmentation 
 
 Customers get split into four tiers using **Recency, Frequency, and
 Monetary (RFM)** scoring — a real technique used in marketing/retention
