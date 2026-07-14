@@ -1,15 +1,3 @@
-"""
-export_dashboard_data.py
--------------------------
-Runs the business analytics queries against MySQL and exports the results
-as a single JSON file (dashboard/data.json) that dashboard.html reads to
-render the interactive dashboard.
-
-Run this after scripts/load_data.py has populated the database, and
-re-run it any time the underlying data changes to refresh the dashboard.
-
-Reads MySQL credentials from environment variables (see .env.example).
-"""
 
 import json
 import os
