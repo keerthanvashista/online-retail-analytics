@@ -130,16 +130,6 @@ This is implemented with `NTILE()` window functions and a CTE in
 `sql/queries.sql` (query 5) — the part of this project where I learned the
 most, honestly.
 
-## A debugging story worth mentioning
-
-While wiring this up to real MySQL (not just the SQLite version I started
-with), I hit a genuinely strange bug: a query kept failing with a syntax
-error no matter what date-formatting function I used. Turned out the
-column alias I'd picked — `year_month` — collides with `YEAR_MONTH`, which
-is a reserved keyword in MySQL used in `INTERVAL` date arithmetic. Took a
-few rounds of elimination to track down, but it's the kind of bug that
-teaches you more than a clean run ever would.
-
 ## Why the dataset is synthetic, not downloaded
 
 I generate the data (`data/generate_data.py`) instead of pulling a Kaggle
