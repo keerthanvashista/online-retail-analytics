@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Online Retail Analytics Dashboard</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+  :root {
+    --bg: #fcfcfb; --surface: #f2f1ec; --ink: #33322e; --ink-soft: #726f69;
+    --blue: #2a78d6; --green: #1baf7a; --amber: #eda100; --red: #e34948; --grid: #e1e0d9;
+  }
+  * { box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background: var(--bg); color: var(--ink); margin: 0; padding: 2rem;
+  }
+  h1 { font-size: 22px; font-weight: 600; margin: 0 0 4px; }
+  .subtitle { color: var(--ink-soft); font-size: 14px; margin: 0 0 24px; }
+  .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(160px, 1fr)); gap: 12px; margin-bottom: 28px; }
+  .kpi-card { background: var(--surface); border-radius: 10px; padding: 16px; }
+  .kpi-label { font-size: 13px; color: var(--ink-soft); margin: 0 0 6px; }
+  .kpi-value { font-size: 26px; font-weight: 600; margin: 0; }
+  .row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-bottom: 28px; }
+  .panel { background: var(--surface); border-radius: 10px; padding: 18px; }
+  .panel-title { font-size: 14px; font-weight: 600; margin: 0 0 12px; display: flex; justify-content: space-between; align-items: center; }
+  select { font-size: 13px; padding: 4px 8px; border-radius: 6px; border: 1px solid var(--grid); background: white; }
+  .chart-wrap { position: relative; width: 100%; height: 280px; }
+  .chart-wrap.short { height: 240px; }
+  .legend { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 10px; font-size: 12px; color: var(--ink-soft); }
+  .legend span { display: flex; align-items: center; gap: 5px; }
+  .dot { width: 10px; height: 10px; border-radius: 2px; display: inline-block; }
+  .error { color: var(--red); padding: 20px; }
+</style>
+</head>
+<body>
+
+<h1>Online Retail Analytics Dashboard</h1>
+<p class="subtitle">Live view of sales, customer segments, and product performance</p>
+
+<div id="app">Loading dashboard data…</div>
+
+<script>
+const COLORS = ['#2a78d6', '#1baf7a', '#eda100', '#e34948', '#8a63d2', '#2fb4c7', '#c47f2a', '#6b8f3a'];
+Chart.defaults.color = '#726f69';
+Chart.defaults.font.size = 12;
+
+fetch('data.json')
+  .then(r => {
+    if (!r.ok) throw new Error('data.json not found (HTTP ' + r.status + ')');
+    return r.json();
+  })
+  .then(data => render(data))
+  .catch(err => {
+    document.getElementById('app').innerHTML =
+      '<div class="error"><strong>Could not load data.json.</strong><br>' +
+      err.message + '<br><br>Make sure you are viewing this via a local server ' +
+      '(e.g. <code>python -m http.server</code> in the dashboard folder), not by ' +
+      'double-clicking the file directly — browsers block local file reads from plain file:// pages.<br><br>' +
+      'Also confirm you have run <code>scripts/export_dashboard_data.py</code> first so data.json exists.</div>';
+  });
+
+function render(data) {
+  const fmt = n => '$' + Number(n).toLocaleString(undefined, {maximumFractionDigits: 0});
+
+  document.getElementById('app').innerHTML = `
+    <div class="kpi-row">
+      <div class="kpi-card"><p class="kpi-label">Total revenue</p><p class="kpi-value">${fmt(data.kpis.total_revenue)}</p></div>
+      <div class="kpi-card"><p class="kpi-label">Customers</p><p class="kpi-value">${Number(data.kpis.total_customers).toLocaleString()}</p></div>
+      <div class="kpi-card"><p class="kpi-label">Orders</p><p class="kpi-value">${Number(data.kpis.total_orders).toLocaleString()}</p></div>
+      <div class="kpi-card"><p class="kpi-label">Avg order value</p><p class="kpi-value">${fmt(data.kpis.avg_order_value)}</p></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:28px;">
+      <p class="panel-title">
+        Top products by revenue
+        <select id="catFilter"><option value="all">All categories</option></select>
+      </p>
+      <div class="chart-wrap"><canvas id="topProducts"></canvas></div>
+    </div>
+
+    <div class="panel" style="margin-bottom:28px;">
+      <p class="panel-title">Monthly revenue trend</p>
+      <div class="chart-wrap short"><canvas id="monthlyTrend"></canvas></div>
+    </div>
+
+    <div class="row">
+      <div class="panel">
+        <p class="panel-title">Revenue by category</p>
+        <div class="chart-wrap short"><canvas id="byCategory"></canvas></div>
+      </div>
+      <div class="panel">
+        <p class="panel-title">Customer segments (RFM)</p>
+        <div class="chart-wrap short"><canvas id="rfm"></canvas></div>
+        <div class="legend" id="rfmLegend"></div>
+      </div>
+    </div>
+
+    <div class="panel">
+      <p class="panel-title">Revenue by country</p>
+      <div class="chart-wrap short"><canvas id="byCountry"></canvas></div>
+    </div>
+  `;
+
+  // Category filter dropdown
+  const select = document.getElementById('catFilter');
+  Object.keys(data.top_products).filter(k => k !== 'all').forEach(cat => {
+    const opt = document.createElement('option');
+    opt.value = cat; opt.textContent = cat;
+    select.appendChild(opt);
+  });
+
+  let topChart;
+  function renderTop(cat) {
+    const rows = data.top_products[cat] || [];
+    if (topChart) topChart.destroy();
+    topChart = new Chart(document.getElementById('topProducts'), {
+      type: 'bar',
+      data: { labels: rows.map(r => r.label), datasets: [{ data: rows.map(r => r.value), backgroundColor: '#2a78d6', borderRadius: 4, maxBarThickness: 22 }] },
+      options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.x) } } },
+        scales: { x: { grid: { color: '#e1e0d9' }, ticks: { callback: v => '$' + (v/1000) + 'k' } }, y: { grid: { display: false } } } }
+    });
+  }
+  renderTop('all');
+  select.addEventListener('change', e => renderTop(e.target.value));
+
+  new Chart(document.getElementById('monthlyTrend'), {
+    type: 'line',
+    data: { labels: data.monthly_trend.map(r => r.label), datasets: [{ data: data.monthly_trend.map(r => r.value), borderColor: '#2a78d6', backgroundColor: 'rgba(42,120,214,0.1)', fill: true, tension: 0.3, pointRadius: 0, borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.y) } } },
+      scales: { x: { grid: { display: false }, ticks: { maxRotation: 45, autoSkip: true, maxTicksLimit: 8 } }, y: { grid: { color: '#e1e0d9' }, ticks: { callback: v => '$' + (v/1000) + 'k' } } } }
+  });
+
+  new Chart(document.getElementById('byCategory'), {
+    type: 'bar',
+    data: { labels: data.by_category.map(r => r.label), datasets: [{ data: data.by_category.map(r => r.value), backgroundColor: '#1baf7a', borderRadius: 4, maxBarThickness: 20 }] },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.x) } } },
+      scales: { x: { grid: { color: '#e1e0d9' }, ticks: { callback: v => '$' + (v/1000) + 'k' } }, y: { grid: { display: false } } } }
+  });
+
+  new Chart(document.getElementById('byCountry'), {
+    type: 'bar',
+    data: { labels: data.by_country.map(r => r.label), datasets: [{ data: data.by_country.map(r => r.value), backgroundColor: '#8a63d2', borderRadius: 4, maxBarThickness: 20 }] },
+    options: { indexAxis: 'y', responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => fmt(c.parsed.x) } } },
+      scales: { x: { grid: { color: '#e1e0d9' }, ticks: { callback: v => '$' + (v/1000) + 'k' } }, y: { grid: { display: false } } } }
+  });
+
+  const rfmColors = { 'Champion': '#1baf7a', 'Loyal': '#2a78d6', 'At Risk': '#eda100', 'Churn Risk': '#e34948' };
+  const order = ['Champion', 'Loyal', 'At Risk', 'Churn Risk'];
+  const rfmSorted = [...data.rfm_segments].sort((a,b) => order.indexOf(a.segment) - order.indexOf(b.segment));
+  new Chart(document.getElementById('rfm'), {
+    type: 'doughnut',
+    data: { labels: rfmSorted.map(r => r.segment), datasets: [{ data: rfmSorted.map(r => r.pct), backgroundColor: rfmSorted.map(r => rfmColors[r.segment]), borderColor: '#f2f1ec', borderWidth: 2 }] },
+    options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false }, tooltip: { callbacks: { label: c => c.label + ': ' + c.parsed + '%' } } }, cutout: '62%' }
+  });
+  document.getElementById('rfmLegend').innerHTML = rfmSorted.map(r =>
+    `<span><span class="dot" style="background:${rfmColors[r.segment]}"></span>${r.segment} ${r.pct}%</span>`
+  ).join('');
+}
+</script>
+</body>
+</html>

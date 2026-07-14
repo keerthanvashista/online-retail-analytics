@@ -1,0 +1,576 @@
+{
+  "kpis": {
+    "total_revenue": 3278656.36,
+    "total_customers": 800.0,
+    "total_orders": 15000.0,
+    "avg_order_value": 218.58
+  },
+  "top_products": {
+    "all": [
+      {
+        "label": "Movement Electronics 65",
+        "value": 169457.44
+      },
+      {
+        "label": "Try Electronics 96",
+        "value": 155890.08
+      },
+      {
+        "label": "Financial Electronics 105",
+        "value": 139976.16
+      },
+      {
+        "label": "Marriage Electronics 118",
+        "value": 123166.07
+      },
+      {
+        "label": "Plan Electronics 29",
+        "value": 112017.36
+      },
+      {
+        "label": "Take Electronics 28",
+        "value": 109976.32
+      },
+      {
+        "label": "Reality Electronics 37",
+        "value": 104603.35
+      },
+      {
+        "label": "International Electronics 30",
+        "value": 94396.56
+      },
+      {
+        "label": "Share Electronics 80",
+        "value": 69572.94
+      },
+      {
+        "label": "Owner Apparel 49",
+        "value": 58405.91
+      }
+    ],
+    "Apparel": [
+      {
+        "label": "Owner Apparel 49",
+        "value": 58405.91
+      },
+      {
+        "label": "Garden Apparel 9",
+        "value": 52809.12
+      },
+      {
+        "label": "Behind Apparel 91",
+        "value": 52078.4
+      },
+      {
+        "label": "Market Apparel 76",
+        "value": 49380.64
+      },
+      {
+        "label": "Maybe Apparel 60",
+        "value": 40716.0
+      },
+      {
+        "label": "Protect Apparel 112",
+        "value": 38740.0
+      },
+      {
+        "label": "Pull Apparel 58",
+        "value": 37545.42
+      },
+      {
+        "label": "Tough Apparel 26",
+        "value": 37411.53
+      },
+      {
+        "label": "Cover Apparel 85",
+        "value": 35014.44
+      },
+      {
+        "label": "Today Apparel 107",
+        "value": 32880.72
+      }
+    ],
+    "Beauty": [
+      {
+        "label": "Factor Beauty 7",
+        "value": 31559.76
+      },
+      {
+        "label": "Wait Beauty 15",
+        "value": 28919.1
+      },
+      {
+        "label": "While Beauty 84",
+        "value": 28827.03
+      },
+      {
+        "label": "Effect Beauty 22",
+        "value": 25066.0
+      },
+      {
+        "label": "Since Beauty 45",
+        "value": 24981.2
+      },
+      {
+        "label": "Day Beauty 120",
+        "value": 24455.9
+      },
+      {
+        "label": "First Beauty 66",
+        "value": 22507.8
+      },
+      {
+        "label": "Course Beauty 73",
+        "value": 22453.76
+      },
+      {
+        "label": "Hear Beauty 93",
+        "value": 21909.58
+      },
+      {
+        "label": "Her Beauty 64",
+        "value": 20724.4
+      }
+    ],
+    "Books": [
+      {
+        "label": "Finally Books 74",
+        "value": 17080.56
+      },
+      {
+        "label": "Very Books 100",
+        "value": 16961.12
+      },
+      {
+        "label": "Under Books 71",
+        "value": 15751.26
+      },
+      {
+        "label": "Art Books 24",
+        "value": 14774.58
+      },
+      {
+        "label": "Your Books 86",
+        "value": 14558.28
+      },
+      {
+        "label": "Interview Books 43",
+        "value": 12912.12
+      },
+      {
+        "label": "Factor Books 11",
+        "value": 12609.12
+      },
+      {
+        "label": "Section Books 48",
+        "value": 12174.36
+      },
+      {
+        "label": "Box Books 3",
+        "value": 11579.04
+      },
+      {
+        "label": "Rich Books 56",
+        "value": 11366.21
+      }
+    ],
+    "Electronics": [
+      {
+        "label": "Movement Electronics 65",
+        "value": 169457.44
+      },
+      {
+        "label": "Try Electronics 96",
+        "value": 155890.08
+      },
+      {
+        "label": "Financial Electronics 105",
+        "value": 139976.16
+      },
+      {
+        "label": "Marriage Electronics 118",
+        "value": 123166.07
+      },
+      {
+        "label": "Plan Electronics 29",
+        "value": 112017.36
+      },
+      {
+        "label": "Take Electronics 28",
+        "value": 109976.32
+      },
+      {
+        "label": "Reality Electronics 37",
+        "value": 104603.35
+      },
+      {
+        "label": "International Electronics 30",
+        "value": 94396.56
+      },
+      {
+        "label": "Share Electronics 80",
+        "value": 69572.94
+      },
+      {
+        "label": "We Electronics 88",
+        "value": 33235.23
+      }
+    ],
+    "Home & Kitchen": [
+      {
+        "label": "Kid Home 42",
+        "value": 36279.24
+      },
+      {
+        "label": "Doctor Home 55",
+        "value": 29595.86
+      },
+      {
+        "label": "Support Home 25",
+        "value": 24859.12
+      },
+      {
+        "label": "Front Home 32",
+        "value": 14774.2
+      },
+      {
+        "label": "Yeah Home 62",
+        "value": 13998.6
+      },
+      {
+        "label": "Yet Home 115",
+        "value": 12603.4
+      },
+      {
+        "label": "Responsibility Home 33",
+        "value": 11862.2
+      },
+      {
+        "label": "Government Home 89",
+        "value": 11799.68
+      },
+      {
+        "label": "Visit Home 119",
+        "value": 7994.25
+      },
+      {
+        "label": "Seek Home 14",
+        "value": 7303.3
+      }
+    ],
+    "Sports & Outdoors": [
+      {
+        "label": "Career Sports 77",
+        "value": 54968.76
+      },
+      {
+        "label": "We Sports 23",
+        "value": 52981.02
+      },
+      {
+        "label": "Food Sports 97",
+        "value": 51353.61
+      },
+      {
+        "label": "Past Sports 47",
+        "value": 51080.56
+      },
+      {
+        "label": "Modern Sports 38",
+        "value": 46154.52
+      },
+      {
+        "label": "Southern Sports 21",
+        "value": 46147.86
+      },
+      {
+        "label": "Customer Sports 51",
+        "value": 42873.32
+      },
+      {
+        "label": "Dog Sports 94",
+        "value": 42149.11
+      },
+      {
+        "label": "Great Sports 6",
+        "value": 29426.25
+      },
+      {
+        "label": "Every Sports 12",
+        "value": 29014.65
+      }
+    ],
+    "Stationery": [
+      {
+        "label": "Pressure Stationery 116",
+        "value": 11712.54
+      },
+      {
+        "label": "Size Stationery 95",
+        "value": 10263.24
+      },
+      {
+        "label": "Bill Stationery 75",
+        "value": 8455.95
+      },
+      {
+        "label": "Argue Stationery 110",
+        "value": 7597.8
+      },
+      {
+        "label": "Partner Stationery 114",
+        "value": 7451.8
+      },
+      {
+        "label": "What Stationery 61",
+        "value": 7402.5
+      },
+      {
+        "label": "Reality Stationery 13",
+        "value": 5275.66
+      },
+      {
+        "label": "Doctor Stationery 92",
+        "value": 5163.68
+      },
+      {
+        "label": "Cup Stationery 18",
+        "value": 4926.33
+      },
+      {
+        "label": "Event Stationery 40",
+        "value": 3119.5
+      }
+    ],
+    "Toys": [
+      {
+        "label": "Really Toys 70",
+        "value": 27137.57
+      },
+      {
+        "label": "Suffer Toys 27",
+        "value": 27116.58
+      },
+      {
+        "label": "Recent Toys 31",
+        "value": 26305.89
+      },
+      {
+        "label": "Gun Toys 52",
+        "value": 25449.2
+      },
+      {
+        "label": "Nor Toys 57",
+        "value": 23167.62
+      },
+      {
+        "label": "Though Toys 69",
+        "value": 22856.68
+      },
+      {
+        "label": "Fire Toys 1",
+        "value": 22458.24
+      },
+      {
+        "label": "Avoid Toys 117",
+        "value": 20448.56
+      },
+      {
+        "label": "Response Toys 87",
+        "value": 19907.19
+      },
+      {
+        "label": "Return Toys 2",
+        "value": 19634.41
+      }
+    ]
+  },
+  "monthly_trend": [
+    {
+      "label": "2024-01",
+      "value": 146580.4
+    },
+    {
+      "label": "2024-02",
+      "value": 134376.86
+    },
+    {
+      "label": "2024-03",
+      "value": 133963.37
+    },
+    {
+      "label": "2024-04",
+      "value": 119961.83
+    },
+    {
+      "label": "2024-05",
+      "value": 157138.95
+    },
+    {
+      "label": "2024-06",
+      "value": 138346.87
+    },
+    {
+      "label": "2024-07",
+      "value": 138437.18
+    },
+    {
+      "label": "2024-08",
+      "value": 141733.35
+    },
+    {
+      "label": "2024-09",
+      "value": 127675.04
+    },
+    {
+      "label": "2024-10",
+      "value": 138128.03
+    },
+    {
+      "label": "2024-11",
+      "value": 128081.62
+    },
+    {
+      "label": "2024-12",
+      "value": 133681.93
+    },
+    {
+      "label": "2025-01",
+      "value": 140978.96
+    },
+    {
+      "label": "2025-02",
+      "value": 110487.07
+    },
+    {
+      "label": "2025-03",
+      "value": 135464.41
+    },
+    {
+      "label": "2025-04",
+      "value": 140337.02
+    },
+    {
+      "label": "2025-05",
+      "value": 141342.0
+    },
+    {
+      "label": "2025-06",
+      "value": 125143.8
+    },
+    {
+      "label": "2025-07",
+      "value": 126158.01
+    },
+    {
+      "label": "2025-08",
+      "value": 145349.56
+    },
+    {
+      "label": "2025-09",
+      "value": 153058.73
+    },
+    {
+      "label": "2025-10",
+      "value": 139910.19
+    },
+    {
+      "label": "2025-11",
+      "value": 146857.81
+    },
+    {
+      "label": "2025-12",
+      "value": 135463.37
+    }
+  ],
+  "by_category": [
+    {
+      "label": "Electronics",
+      "value": 1112291.51
+    },
+    {
+      "label": "Apparel",
+      "value": 581535.27
+    },
+    {
+      "label": "Sports & Outdoors",
+      "value": 480616.45
+    },
+    {
+      "label": "Beauty",
+      "value": 359350.98
+    },
+    {
+      "label": "Toys",
+      "value": 320378.07
+    },
+    {
+      "label": "Home & Kitchen",
+      "value": 175759.75
+    },
+    {
+      "label": "Books",
+      "value": 169194.82
+    },
+    {
+      "label": "Stationery",
+      "value": 79529.51
+    }
+  ],
+  "by_country": [
+    {
+      "label": "United Kingdom",
+      "value": 589697.64
+    },
+    {
+      "label": "Canada",
+      "value": 533743.6
+    },
+    {
+      "label": "France",
+      "value": 441353.79
+    },
+    {
+      "label": "Netherlands",
+      "value": 422152.16
+    },
+    {
+      "label": "India",
+      "value": 394940.9
+    },
+    {
+      "label": "Germany",
+      "value": 346254.16
+    },
+    {
+      "label": "Australia",
+      "value": 305469.48
+    },
+    {
+      "label": "United States",
+      "value": 245044.63
+    }
+  ],
+  "rfm_segments": [
+    {
+      "segment": "Churn Risk",
+      "count": 144,
+      "pct": 18.0
+    },
+    {
+      "segment": "At Risk",
+      "count": 178,
+      "pct": 22.2
+    },
+    {
+      "segment": "Loyal",
+      "count": 251,
+      "pct": 31.4
+    },
+    {
+      "segment": "Champion",
+      "count": 227,
+      "pct": 28.4
+    }
+  ]
+}
