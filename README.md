@@ -1,33 +1,35 @@
 # Online Retail SQL Analytics Dashboard
 
-An end-to-end data analytics project that answers real business questions —
-top products, revenue trends, customer segmentation, and churn risk — using
-MySQL for data storage/querying and Python for analysis and visualization.
+I built this project to get hands-on with the kind of SQL and data analysis
+work that shows up in real business settings — not just running SELECT
+statements, but actually answering questions a business would care about:
+which products are worth pushing, which customers are worth keeping, and
+which ones are quietly slipping away.
 
-## Overview
+## What it does
 
-This project simulates the analytics workflow of an e-commerce business:
-data is stored relationally (customers, products, transactions) in MySQL,
-queried with SQL to answer specific business questions, and visualized with
-Python to support decision-making.
+It's a small e-commerce analytics pipeline. Data lives in MySQL across
+three related tables (customers, products, transactions), I query it with
+SQL to pull out real business insights, and then visualize the results —
+both as static charts and as a live interactive dashboard.
 
-**Business questions answered:**
-- Which products and categories drive the most revenue?
-- How is revenue trending month over month?
-- Which countries/markets contribute most to the business?
-- Which customers are most valuable (RFM segmentation)?
-- Which previously active customers are at risk of churning?
+Questions it answers:
+- Which products and categories are actually driving revenue?
+- How's revenue trending month to month?
+- Which countries/markets matter most?
+- Who are the most valuable customers, and who's at risk of churning?
 
-## Tech Stack
+## Tech stack
 
 | Layer | Tool |
 |---|---|
 | Database | MySQL 8+ |
-| Querying | SQL (joins, window functions, CTEs) |
+| Querying | SQL — joins, CTEs, window functions |
 | Data generation | Python, Faker |
 | Analysis & visualization | Python, pandas, matplotlib, seaborn, SQLAlchemy |
+| Dashboard | HTML, JS, Chart.js |
 
-## Project Structure
+## Project structure
 
 ```
 online-retail-sql-analytics/
@@ -40,49 +42,44 @@ online-retail-sql-analytics/
 │   ├── schema.sql            # Table definitions (MySQL)
 │   └── queries.sql           # All business analytics queries
 ├── scripts/
-│   ├── load_data.py          # Loads CSVs into MySQL using schema.sql
-│   └── analysis.py           # Runs queries, generates visualizations
-├── visualizations/
-│   ├── top_10_products.png
-│   ├── monthly_revenue_trend.png
-│   ├── revenue_by_category.png
-│   ├── revenue_by_country.png
-│   └── rfm_customer_segments.png
-├── .env.example               # Template for MySQL credentials (safe to commit)
+│   ├── load_data.py               # Loads CSVs into MySQL
+│   ├── analysis.py                # Runs queries, generates static charts
+│   └── export_dashboard_data.py   # Exports query results for the dashboard
+├── dashboard/
+│   ├── index.html            # Interactive dashboard (Chart.js)
+│   └── data.json             # Exported data the dashboard reads
+├── visualizations/            # Static PNG charts
+├── .env.example               # Template for MySQL credentials — safe to commit
 ├── requirements.txt
 └── README.md
 ```
 
-## How to Run
+## How to run it
 
-### 1. Install dependencies
-
+**1. Install dependencies**
 ```bash
 pip install -r requirements.txt
 ```
 
-### 2. Generate the synthetic dataset
-
+**2. Generate the dataset**
 ```bash
 python data/generate_data.py
 ```
+(More on why this is synthetic rather than downloaded, below.)
 
-### 3. Create the database and tables
+**3. Set up the database**
 
-In MySQL Workbench (or the `mysql` CLI):
-
+In MySQL Workbench or the CLI:
 ```sql
 CREATE DATABASE retail_analytics;
 ```
+Then run `sql/schema.sql` against it to create the tables.
 
-Then run `sql/schema.sql` against that database to create the `customers`,
-`products`, and `transactions` tables.
+**4. Set your MySQL credentials**
 
-### 4. Set your MySQL credentials
-
-This project reads credentials from environment variables — never hardcoded
-in the scripts — so it's safe to keep this repo public. Copy `.env.example`
-for reference, then set the password in your terminal session:
+I didn't want to hardcode a password anywhere in this repo, so the scripts
+read credentials from environment variables instead. Copy `.env.example`
+for reference, then set your password for the session:
 
 ```powershell
 # PowerShell
@@ -93,65 +90,74 @@ $env:MYSQL_PASSWORD = "your_actual_password"
 export MYSQL_PASSWORD="your_actual_password"
 ```
 
-`MYSQL_USER`, `MYSQL_HOST`, `MYSQL_PORT`, and `MYSQL_DATABASE` can also be
-overridden via environment variables if your setup differs from the
-defaults (`root` / `localhost` / `3306` / `retail_analytics`).
+(`MYSQL_USER`, `MYSQL_HOST`, `MYSQL_PORT`, `MYSQL_DATABASE` can be overridden
+the same way if your setup differs from the defaults.)
 
-### 5. Load data into MySQL
-
+**5. Load the data**
 ```bash
 python scripts/load_data.py
 ```
 
-### 6. Run analysis and generate visualizations
-
+**6. Generate the charts**
 ```bash
 python scripts/analysis.py
 ```
 
-## Key Analysis: RFM Customer Segmentation
+**7. (Optional) Build the interactive dashboard**
+```bash
+python scripts/export_dashboard_data.py
+cd dashboard
+python -m http.server 8000
+```
+Then open `http://localhost:8000` in your browser. Note: you can't just
+double-click `index.html` — browsers block local file reads for security,
+so it needs to be served, even just locally like this.
 
-Customers are segmented into four tiers using **Recency, Frequency, and
-Monetary (RFM)** scoring — a widely used business analytics technique for
-prioritizing marketing and retention efforts:
+## The RFM segmentation (the part I'm most proud of)
 
-| Segment | Meaning |
+Customers get split into four tiers using **Recency, Frequency, and
+Monetary (RFM)** scoring — a real technique used in marketing/retention
+work, not something I made up for this project:
+
+| Segment | What it means |
 |---|---|
-| **Champion** | Recent, frequent, high-spending customers |
-| **Loyal** | Consistent repeat customers |
-| **At Risk** | Previously active, declining engagement |
-| **Churn Risk** | Long since last purchase — needs re-engagement |
+| **Champion** | Recent, frequent, high-spending |
+| **Loyal** | Steady repeat customers |
+| **At Risk** | Used to be active, engagement is dropping |
+| **Churn Risk** | Hasn't bought in a while — needs winning back |
 
-See `sql/queries.sql` (query 5) for the full SQL implementation using
-window functions (`NTILE`), and `visualizations/rfm_customer_segments.png`
-for the resulting distribution.
+This is implemented with `NTILE()` window functions and a CTE in
+`sql/queries.sql` (query 5) — the part of this project where I learned the
+most, honestly.
 
-## Sample Visualizations
+## A debugging story worth mentioning
 
-- **Top 10 Products by Revenue** — identifies best-selling items
-- **Monthly Revenue Trend** — tracks business growth over time
-- **Revenue by Category** — highlights which product lines matter most
-- **Revenue by Country** — geographic performance breakdown
-- **Customer Segmentation** — RFM-based customer value tiers
+While wiring this up to real MySQL (not just the SQLite version I started
+with), I hit a genuinely strange bug: a query kept failing with a syntax
+error no matter what date-formatting function I used. Turned out the
+column alias I'd picked — `year_month` — collides with `YEAR_MONTH`, which
+is a reserved keyword in MySQL used in `INTERVAL` date arithmetic. Took a
+few rounds of elimination to track down, but it's the kind of bug that
+teaches you more than a clean run ever would.
 
-## Notes on the Dataset
+## Why the dataset is synthetic, not downloaded
 
-The dataset is synthetically generated (`data/generate_data.py`) rather than
-downloaded, to keep the project fully reproducible and self-contained. It
-mirrors the structure of real-world e-commerce transaction logs (customers,
-products, orders across time) and includes an intentional Pareto-style skew
-in purchase behavior, so segmentation and churn analysis produce realistic,
-non-uniform patterns rather than a flat distribution. The same pipeline and
-queries apply directly to real transactional datasets (e.g., the UCI/Kaggle
-Online Retail dataset), which include additional real-world messiness such
-as missing customer IDs and returns.
+I generate the data (`data/generate_data.py`) instead of pulling a Kaggle
+dataset, mainly to keep the project fully reproducible for anyone who
+clones it. It's built to mirror real e-commerce transaction structure —
+customers, products, orders over time — with a deliberate Pareto-style
+skew in buying behavior, so the segmentation and churn analysis produce
+realistic, uneven patterns instead of a flat distribution. The same schema
+and queries work directly against real transactional data too (e.g. the
+UCI/Kaggle Online Retail dataset), which comes with its own real-world mess
+— missing customer IDs, returns, that sort of thing.
 
-## Security Note
+## A note on security
 
-Database credentials are never hardcoded in this repo. Scripts read them
-from environment variables (see `.env.example` for the required variables).
-A local `.env` file, if you create one, is excluded via `.gitignore` and
-will never be committed.
+No credentials are hardcoded anywhere in this repo. Everything sensitive
+comes from environment variables, and the actual `.env` file (if you make
+one locally) is git-ignored — only the placeholder `.env.example` is
+tracked.
 
 ## Author
 
